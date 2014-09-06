@@ -21,8 +21,11 @@ sudo pip install requests
 
 # create a ram filesystem
 # http://www.thegeekstuff.com/2008/11/overview-of-ramfs-and-tmpfs-on-linux/
+#<device> <mountpoint> <filesystemtype><options> <dump> <fsckorder>
 sudo mkdir -p /mnt/ram
 echo "ramfs /mnt/ram ramfs nodev,nosuid,noexec,nodiratime,size=64M 0 0" | sudo tee -a /etc/fstab
+# so we do not have to run the scripts with sudo just open up the /mnt/ram mount
+sudo chmod 0777 /mnt/ram
 
 #sudo apt-get --yes --force-yes install netatalk
 

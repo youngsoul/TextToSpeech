@@ -4,6 +4,9 @@ import os
 import hashlib
 import base64
 import requests
+import textwrap
+
+
 
 #
 # I know this has been answered already,
@@ -22,6 +25,14 @@ class GoogleTextToSpeech:
     def __init__(self, tmp_dir="/mnt/ram"):
         self.tts_url = "http://translate.google.com/translate_tts?tl=en_gb&q="
         self.tmp_dir = tmp_dir
+        self.mp3_files = []
+
+    def _save_playlist(self):
+        if len(self.mp3_files) > 0:
+            with open(self.tmp_dir + "/play_list.txt", 'w')as f:
+                f.writelines(self.mp3_files)
+                f.flush()
+
 
     #
     # Download url to a file that is the base64(md5(url))[file extension]
@@ -32,6 +43,9 @@ class GoogleTextToSpeech:
     #
     def _download_file(self, text_sample):
         local_filename = self._create_media_filename(text_sample)
+
+        self.mp3_files.extend(local_filename+"\n")
+
         if not os.path.isfile(local_filename):
             # local_filename = url.split('/')[-1]
             # NOTE the stream=True parameter
@@ -48,7 +62,7 @@ class GoogleTextToSpeech:
 
     @staticmethod
     def _create_base64_md5_hash(string_to_hash):
-        string_to_hash_as_bytes = str.encode(string_to_hash)
+        string_to_hash_as_bytes = unicode.encode(string_to_hash)
         md5_hash_string = hashlib.md5(string_to_hash_as_bytes).hexdigest()
         md5_as_base64_bytes = base64.standard_b64encode(str.encode(md5_hash_string))
         md5_as_base64_string = md5_as_base64_bytes.decode('ascii')
@@ -62,4 +76,16 @@ class GoogleTextToSpeech:
         return local_filename
 
     def get_text_to_speech(self, text_sample):
-        return self._download_file(text_sample)
+        self.mp3_files = []
+        if len(text_sample) > 100:
+            shorts = []
+            for chunk in text_sample.split('. '):
+                shorts.extend(textwrap.wrap(chunk, 100))
+
+            for sentence in shorts:
+                self._download_file(sentence.lstrip())
+
+        else:
+            self._download_file(text_sample)
+
+        self._save_playlist()
