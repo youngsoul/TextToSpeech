@@ -1,5 +1,6 @@
 
 ./tests/mp3files/*.mp3
+./tests/mp3files/play_list.txt
 
 .AppleStore
 

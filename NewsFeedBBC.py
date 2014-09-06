@@ -12,12 +12,17 @@ import subprocess
 
 
 try:
-    rss = feedparser.parse('http://feeds.bbci.co.uk/news/world/rss.xml')
+    #
+    # http://feeds.bbci.co.uk/news/world/rss.xml
+    # Opinion: http://online.wsj.com/xml/rss/3_7041.xml
+    # US Business: http://online.wsj.com/xml/rss/3_7014.xml
+    # US Market News: http://online.wsj.com/xml/rss/3_7031.xml
+    rss = feedparser.parse('http://online.wsj.com/xml/rss/3_7014.xml')
 
 
-#for entry in rss.entries[:4]:
-#    print entry['title']
-#    print entry['description']
+    # for entry in rss.entries[:4]:
+    #     print entry['title']
+    #     print entry['description']
 #
 #print rss.entries[0]['title']
 #print rss.entries[0]['description']
@@ -28,12 +33,15 @@ try:
 #print rss.entries[3]['title']
 #print rss.entries[3]['description']
 
-    newsfeed = rss.entries[0]['title'] + '.  ' + rss.entries[0]['description'] + '.  ' + rss.entries[1]['title'] + '.  ' + rss.entries[1]['description'] + '.  ' + rss.entries[2]['title'] + '.  ' + rss.entries[2]['description'] + '.  ' + rss.entries[3]['title'] + '.  ' + rss.entries[3]['description'] + '.  '
+    newsfeed = ""
+    for entry in rss.entries[:7]:
+        newsfeed += entry['title'] + '.  ' + entry['description'] + '.  '
 
 # print newsfeed
 
 # Today's news from BBC
-    news = 'And now, The latest stories from the World section of the BBC News.  ' + newsfeed
+#    news = 'And now, The latest stories from the World section of the BBC News.  ' + newsfeed
+    news = 'And now, The latest stories from the ' + rss.feed.title + '.  ' + newsfeed
 
     script_dir = os.path.dirname(os.path.abspath(__file__))+"/tests/mp3files"
     if platform.system() == "Linux":
