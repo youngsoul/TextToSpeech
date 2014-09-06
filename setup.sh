@@ -5,7 +5,7 @@
 # cat ~/.ssh/id_rsa.pub
 # copy ssh key into bitbucket account.
 # mkdir dev;cd dev
-# git clone git@bitbucket.org:theyoungsoul/matrixweb.git
+# git clone git@github.com:youngsoul/TextToSpeech.git
 # chmod +x setup.sh
 
 sudo raspi-config
