@@ -35,7 +35,9 @@ class GoogleTextToSpeech:
         if not os.path.isfile(local_filename):
             # local_filename = url.split('/')[-1]
             # NOTE the stream=True parameter
-            r = requests.get(self.tts_url+"'"+text_sample+"'", stream=True)
+            the_url = self.tts_url+"'"+text_sample+"'"
+            print("url: " + the_url)
+            r = requests.get(the_url, stream=True)
             with open(local_filename, 'wb')as f:
                 for chunk in r.iter_content(chunk_size=1024):
                     if chunk:
