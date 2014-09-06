@@ -1,0 +1,9 @@
+
+./tests/mp3files/*.mp3
+
+.AppleStore
+
+.idea
+.idea/*
+*.pyc
+**/*.mp3
