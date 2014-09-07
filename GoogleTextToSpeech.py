@@ -7,7 +7,6 @@ import requests
 import textwrap
 
 
-
 #
 # I know this has been answered already,
 # but I discovered a more general solution in case anyone is interested -
@@ -18,8 +17,6 @@ import textwrap
 # http://translate.google.com/translate_tts?q=testing+1+2+3&tl=en_gb
 #
 # http://translate.google.com/translate_tts?q=testing+1+2+3&tl=en_au
-
-
 class GoogleTextToSpeech:
 
     def __init__(self, tmp_dir="/mnt/ram"):
@@ -33,7 +30,6 @@ class GoogleTextToSpeech:
                 f.writelines(self.mp3_files)
                 f.flush()
 
-
     #
     # Download url to a file that is the base64(md5(url))[file extension]
     # for exmple:
@@ -44,6 +40,7 @@ class GoogleTextToSpeech:
     def _download_file(self, text_sample):
         local_filename = self._create_media_filename(text_sample)
 
+        # add a \n so each one ends up on their own line in the play_list.txt file
         self.mp3_files.extend(local_filename+"\n")
 
         if not os.path.isfile(local_filename):
@@ -69,6 +66,11 @@ class GoogleTextToSpeech:
         return md5_as_base64_string
 
     def _create_media_filename(self, text_sample):
+        '''create a filename based on the hash of the text_sample.  This is
+        helpful when you might not want to remove the file right away and you
+        would like to reuse the same file if the text_sample hashes to the
+        same value'''
+
         # create a md5 hash of url to use as filename, and check to see
         # if that file is already available
         md5_text_hash = GoogleTextToSpeech._create_base64_md5_hash(text_sample)
@@ -76,6 +78,15 @@ class GoogleTextToSpeech:
         return local_filename
 
     def get_text_to_speech(self, text_sample):
+        '''given the text_sample, interface with google translate to convert
+        the text to mp3 speech samples.  If the text is greater than 100
+        characters, it will be divided on a sentence boundary and multiple
+        mp3 files will be generated.
+        in the tmp_dir will be mp3 files and a file called play_list.txt
+        which contains the ordered collection of mp3 files.
+        You can use mpg123 to play the mp3 files from the play_list.txt file as:
+        >> print subprocess.call('mpg123 -h 10 -d 11 --list ' + play_list_file, shell=True)'''
+
         self.mp3_files = []
         if len(text_sample) > 100:
             shorts = []

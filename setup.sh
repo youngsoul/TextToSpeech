@@ -16,7 +16,8 @@ sudo apt-get --yes update
 sudp apt-get --yes upgrade
 sudo apt-get --yes --force-yes install python-pip
 
-sudo apt-get install python-feedparser mpg123 festival
+sudo apt-get install python-feedparser mpg123
+#sudo apt-get install festival
 sudo pip install requests
 
 # create a ram filesystem
