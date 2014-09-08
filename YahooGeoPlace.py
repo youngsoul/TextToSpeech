@@ -28,7 +28,10 @@ class YahooGeoPlace:
 
     def get_woeid(self):
         if self.results:
-            return self.results['query']['results']['place']['woeid']
+            if type(self.results['query']['results']['place']) is dict:
+                return self.results['query']['results']['place']['woeid']
+            else:
+                return self.results['query']['results']['place'][0]['woeid']
         else:
             return None
 

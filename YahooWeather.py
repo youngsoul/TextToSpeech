@@ -91,7 +91,7 @@ class YahooWeather:
         return summary
 
 if __name__ == '__main__':
-    y = YahooWeather(location="North Barrington Illinois US")
+    y = YahooWeather(location="Digby Nova Scotia CA")
     y.retrieve_weather()
     weather_summary = y.generate_summary()
     print(weather_summary)
