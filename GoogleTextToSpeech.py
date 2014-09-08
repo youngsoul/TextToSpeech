@@ -5,6 +5,8 @@ import hashlib
 import base64
 import requests
 import textwrap
+import platform
+import subprocess
 
 
 #
@@ -47,7 +49,7 @@ class GoogleTextToSpeech:
             # local_filename = url.split('/')[-1]
             # NOTE the stream=True parameter
             the_url = self.tts_url+"'"+text_sample+"'"
-            print("url: " + the_url)
+            #print("url: " + the_url)
             r = requests.get(the_url, stream=True)
             with open(local_filename, 'wb')as f:
                 for chunk in r.iter_content(chunk_size=1024):
@@ -100,3 +102,14 @@ class GoogleTextToSpeech:
             self._download_file(text_sample)
 
         self._save_playlist()
+
+    def play_text_to_speech(self):
+        if platform.system() == "Linux":
+            play_list_file = self.tmp_dir + "/play_list.txt"
+            # Play the mp3s returned
+            subprocess.call('mpg123 -q -h 10 -d 11 --list ' + play_list_file, shell=True)
+
+    def clear(self):
+        self.mp3_files = []
+        subprocess.call('rm /mnt/ram/*.mp3', shell=True)
+        subprocess.call('rm /mnt/ram/*.txt', shell=True)

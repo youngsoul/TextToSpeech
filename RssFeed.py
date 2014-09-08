@@ -34,7 +34,7 @@ try:
 #print rss.entries[3]['description']
 
     newsfeed = ""
-    for entry in rss.entries[:7]:
+    for entry in rss.entries[:5]:
         newsfeed += entry['title'] + '.  ' + entry['description'] + '.  '
 
 # print newsfeed
@@ -42,6 +42,8 @@ try:
 # Today's news from BBC
 #    news = 'And now, The latest stories from the World section of the BBC News.  ' + newsfeed
     news = 'And now, The latest stories from the ' + rss.feed.title + '.  ' + newsfeed
+
+    print("News Summary: " + news)
 
     script_dir = os.path.dirname(os.path.abspath(__file__))+"/tests/mp3files"
     if platform.system() == "Linux":
@@ -51,13 +53,8 @@ try:
     g.get_text_to_speech(news)
 
     if platform.system() == "Linux":
-        play_list_file = script_dir + "/play_list.txt"
-        # Play the mp3s returned
-        print subprocess.call('mpg123 -h 10 -d 11 --list ' + play_list_file, shell=True)
-        #print subprocess.call('mpg123 -h 10 -d 11 '+os.path.abspath(mp3file), shell=True)
-        print("finished playing mp3")
-        print subprocess.call('rm /mnt/ram/*.mp3', shell=True)
-        print subprocess.call('rm /mnt/ram/*.txt', shell=True)
+        g.play_text_to_speech()
+        g.clear()
 
 
 except rss.bozo:
