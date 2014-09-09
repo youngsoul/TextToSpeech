@@ -8,7 +8,6 @@ import feedparser
 import GoogleTextToSpeech as tts
 import platform
 import os
-import subprocess
 
 
 try:
