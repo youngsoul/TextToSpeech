@@ -68,10 +68,10 @@ class GoogleTextToSpeech:
         return md5_as_base64_string
 
     def _create_media_filename(self, text_sample):
-        '''create a filename based on the hash of the text_sample.  This is
+        """create a filename based on the hash of the text_sample.  This is
         helpful when you might not want to remove the file right away and you
         would like to reuse the same file if the text_sample hashes to the
-        same value'''
+        same value"""
 
         # create a md5 hash of url to use as filename, and check to see
         # if that file is already available
@@ -80,14 +80,14 @@ class GoogleTextToSpeech:
         return local_filename
 
     def get_text_to_speech(self, text_sample):
-        '''given the text_sample, interface with google translate to convert
+        """given the text_sample, interface with google translate to convert
         the text to mp3 speech samples.  If the text is greater than 100
         characters, it will be divided on a sentence boundary and multiple
         mp3 files will be generated.
         in the tmp_dir will be mp3 files and a file called play_list.txt
         which contains the ordered collection of mp3 files.
         You can use mpg123 to play the mp3 files from the play_list.txt file as:
-        >> print subprocess.call('mpg123 -h 10 -d 11 --list ' + play_list_file, shell=True)'''
+        >> print subprocess.call('mpg123 -h 10 -d 11 --list ' + play_list_file, shell=True)"""
 
         self.mp3_files = []
         if len(text_sample) > 100:
