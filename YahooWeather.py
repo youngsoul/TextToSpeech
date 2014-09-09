@@ -69,7 +69,10 @@ class YahooWeather:
             self.conditions_temp = rss['entries'][0]['yweather_condition']['temp']
             self.conditions_text = rss['entries'][0]['yweather_condition']['text']
             self.title_detail = rss['entries'][0]['title_detail']['value']
-            self.forecast_summary = re.sub('<[^<]+?>', '', rss['items'][0]['summary_detail']['value'])
+
+    def generate_summary(self):
+        if self.results:
+            self.forecast_summary = re.sub('<[^<]+?>', '', self.results['items'][0]['summary_detail']['value'])
 
             self.forecast_summary = re.sub('Sun -', ' .Sunday. ', self.forecast_summary)
             self.forecast_summary = re.sub('Mon -', ' .Monday. ', self.forecast_summary)
@@ -85,13 +88,14 @@ class YahooWeather:
             self.forecast_summary = re.sub('High:', 'High of', self.forecast_summary)
             self.forecast_summary = re.sub('Low:', 'Low of', self.forecast_summary)
 
-    def generate_summary(self):
+            summary = string.Template(self.forecast_summary).substitute({"title_detail":self.title_detail})
+            return summary
+        else:
+            return "No weather data is current available.  "
 
-        summary = string.Template(self.forecast_summary).substitute({"title_detail":self.title_detail})
-        return summary
 
 if __name__ == '__main__':
-    y = YahooWeather(location="Digby Nova Scotia CA")
+    y = YahooWeather(location="North Barrington IL US")
     y.retrieve_weather()
     weather_summary = y.generate_summary()
     print(weather_summary)

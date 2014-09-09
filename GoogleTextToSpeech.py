@@ -111,5 +111,5 @@ class GoogleTextToSpeech:
 
     def clear(self):
         self.mp3_files = []
-        subprocess.call('rm /mnt/ram/*.mp3', shell=True)
-        subprocess.call('rm /mnt/ram/*.txt', shell=True)
+        subprocess.call('rm ' + self.tmp_dir + '/*.mp3', shell=True)
+        subprocess.call('rm ' + self.tmp_dir + '/*.txt', shell=True)
