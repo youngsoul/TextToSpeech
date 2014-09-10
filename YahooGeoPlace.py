@@ -37,7 +37,7 @@ class YahooGeoPlace:
 
 
 if __name__ == '__main__':
-    y = YahooGeoPlace(location="North Barrington IL US")
+    y = YahooGeoPlace(location="Boston MA US")
     y.locate()
     print("Results: " + y.get_woeid())
 
