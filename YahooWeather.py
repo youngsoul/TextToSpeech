@@ -82,9 +82,9 @@ class YahooWeather:
             self.forecast_summary = re.sub('Fri -', ' .Friday. ', self.forecast_summary)
             self.forecast_summary = re.sub('Sat -', ' .Saturday ', self.forecast_summary)
             self.forecast_summary = re.sub('Current Conditions:', 'Weather $title_detail. Currently', self.forecast_summary)
-            self.forecast_summary = re.sub(' C\n', ' degrees celcius.', self.forecast_summary)
-            self.forecast_summary = re.sub(' F\n', ' degrees fahrenheit.\n', self.forecast_summary)
-            self.forecast_summary = re.sub('Forecast:', 'five day Forecast.', self.forecast_summary)
+            self.forecast_summary = re.sub(' C\n', ' degrees celcius.  \n', self.forecast_summary)
+            self.forecast_summary = re.sub(' F\n', ' degrees fahrenheit.  \n', self.forecast_summary)
+            self.forecast_summary = re.sub('Forecast:', 'five day Forecast.  \n', self.forecast_summary)
             self.forecast_summary = re.sub('High:', 'High of', self.forecast_summary)
             self.forecast_summary = re.sub('Low:', 'Low of', self.forecast_summary)
 
@@ -95,7 +95,7 @@ class YahooWeather:
 
 
 if __name__ == '__main__':
-    y = YahooWeather(location="North Barrington IL US")
+    y = YahooWeather(location="Cork Ireland", degrees='c')
     y.retrieve_weather()
     weather_summary = y.generate_summary()
     print(weather_summary)
