@@ -61,7 +61,11 @@ class GoogleTextToSpeech:
 
     @staticmethod
     def _create_base64_md5_hash(string_to_hash):
-        string_to_hash_as_bytes = unicode.encode(string_to_hash)
+        if isinstance(string_to_hash, unicode):
+            string_to_hash_as_bytes = unicode.encode(string_to_hash)
+        else:
+            string_to_hash_as_bytes = str.encode(string_to_hash)
+
         md5_hash_string = hashlib.md5(string_to_hash_as_bytes).hexdigest()
         md5_as_base64_bytes = base64.standard_b64encode(str.encode(md5_hash_string))
         md5_as_base64_string = md5_as_base64_bytes.decode('ascii')
