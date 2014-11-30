@@ -26,9 +26,9 @@ class GoogleTextToSpeech:
         self.tmp_dir = tmp_dir
         self.mp3_files = []
 
-    def _save_playlist(self):
+    def _save_playlist(self, play_list_name='play_list.txt'):
         if len(self.mp3_files) > 0:
-            with open(self.tmp_dir + "/play_list.txt", 'w')as f:
+            with open(self.tmp_dir + "/" + play_list_name, 'w')as f:
                 f.writelines(self.mp3_files)
                 f.flush()
 
@@ -83,7 +83,7 @@ class GoogleTextToSpeech:
         local_filename = self.tmp_dir + "/" + md5_text_hash + ".mp3"
         return local_filename
 
-    def get_text_to_speech(self, text_sample):
+    def get_text_to_speech(self, text_sample, play_list_name='play_list.txt'):
         """given the text_sample, interface with google translate to convert
         the text to mp3 speech samples.  If the text is greater than 100
         characters, it will be divided on a sentence boundary and multiple
@@ -105,11 +105,11 @@ class GoogleTextToSpeech:
         else:
             self._download_file(text_sample)
 
-        self._save_playlist()
+        self._save_playlist(play_list_name)
 
-    def play_text_to_speech(self):
+    def play_text_to_speech(self, play_list_name='play_list.txt'):
         if platform.system() == "Linux":
-            play_list_file = self.tmp_dir + "/play_list.txt"
+            play_list_file = self.tmp_dir + '/'+play_list_name
             # Play the mp3s returned
             subprocess.call('mpg123 -q -h 10 -d 11 --list ' + play_list_file, shell=True)
 

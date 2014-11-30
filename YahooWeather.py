@@ -5,6 +5,7 @@ import feedparser
 from YahooGeoPlace import YahooGeoPlace
 import re
 import platform
+import os
 
 
 class YahooWeather:
@@ -95,17 +96,20 @@ class YahooWeather:
 
 
 if __name__ == '__main__':
-    y = YahooWeather(location="Cork Ireland", degrees='c')
-    y.retrieve_weather()
-    weather_summary = y.generate_summary()
-    print(weather_summary)
+    from GoogleTextToSpeech import GoogleTextToSpeech
+    use_weather = True
+    script_dir = os.path.dirname(os.path.abspath(__file__))+"/tests/mp3files"
     if platform.system() == 'Linux':
-        from GoogleTextToSpeech import GoogleTextToSpeech
-
         script_dir = "/mnt/ram"
-        g = GoogleTextToSpeech(tmp_dir = script_dir)
+
+    g = GoogleTextToSpeech(tmp_dir = script_dir)
+
+    if use_weather:
+        y = YahooWeather(location="Lake Geneva WI US", degrees='f')
+        y.retrieve_weather()
+        weather_summary = y.generate_summary()
+        print(weather_summary)
         g.get_text_to_speech(weather_summary)
-        g.play_text_to_speech()
-        g.clear()
-
-
+        if platform.system() == 'Linux':
+            g.play_text_to_speech()
+            g.clear()
