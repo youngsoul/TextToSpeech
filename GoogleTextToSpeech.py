@@ -113,7 +113,21 @@ class GoogleTextToSpeech:
             # Play the mp3s returned
             subprocess.call('mpg123 -q -h 10 -d 11 --list ' + play_list_file, shell=True)
 
-    def clear(self):
+    def clear_all(self):
         self.mp3_files = []
         subprocess.call('rm ' + self.tmp_dir + '/*.mp3', shell=True)
         subprocess.call('rm ' + self.tmp_dir + '/*.txt', shell=True)
+
+    def clear_play_list(self, play_list_name='play_list.txt'):
+        playlistfilepath = self.tmp_dir+"/"+play_list_name
+        if os.path.exists(playlistfilepath):
+            with open(playlistfilepath) as f:
+                content = f.readlines()
+
+            for filename in content:
+                filename = filename.strip()
+                print(filename)
+                if os.path.exists(filename):
+                    os.remove(filename)
+
+            os.remove(playlistfilepath)

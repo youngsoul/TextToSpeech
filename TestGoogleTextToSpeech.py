@@ -24,3 +24,4 @@ if platform.system() == "Linux":
     print("finished playing mp3")
     print subprocess.call('rm /mnt/ram/*.mp3', shell=True)
 
+g.clear_all()

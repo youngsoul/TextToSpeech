@@ -49,5 +49,5 @@ if __name__ == '__main__':
         g = GoogleTextToSpeech(tmp_dir = script_dir)
         g.get_text_to_speech(stock_summary)
         g.play_text_to_speech()
-        g.clear()
+        g.clear_all()
 

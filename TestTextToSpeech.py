@@ -21,4 +21,4 @@ if __name__ == '__main__':
     g.get_text_to_speech(summary)
     if platform.system() == 'Linux':
         g.play_text_to_speech()
-        g.clear()
+    g.clear_play_list()

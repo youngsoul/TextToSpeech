@@ -61,7 +61,7 @@ try:
 
     if platform.system() == "Linux":
         g.play_text_to_speech()
-        g.clear()
+        g.clear_all()
 
 
 except rss.bozo:
