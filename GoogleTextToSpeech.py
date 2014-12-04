@@ -119,9 +119,9 @@ class GoogleTextToSpeech:
         subprocess.call('rm ' + self.tmp_dir + '/*.txt', shell=True)
 
     def clear_play_list(self, play_list_name='play_list.txt'):
-        playlistfilepath = self.tmp_dir+"/"+play_list_name
-        if os.path.exists(playlistfilepath):
-            with open(playlistfilepath) as f:
+        play_list_file_path = self.tmp_dir+"/"+play_list_name
+        if os.path.exists(play_list_file_path):
+            with open(play_list_file_path) as f:
                 content = f.readlines()
 
             for filename in content:
@@ -130,4 +130,4 @@ class GoogleTextToSpeech:
                 if os.path.exists(filename):
                     os.remove(filename)
 
-            os.remove(playlistfilepath)
+            os.remove(play_list_file_path)
