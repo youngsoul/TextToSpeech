@@ -46,7 +46,9 @@ class YahooRss:
                 news_entries += entry['entry']['title'] + '.  ' + entry['entry']['summary'] + '.  '
             news_summary = 'And now, The latest stories from the ' + feed_title + '.  ' + news_entries
 
-        return news_summary
+        # if the aphostrophe is a special character, then replace it
+        # with the ascii equivalent.
+        return news_summary.replace(u'\u2019', "'")
 
 if __name__ == '__main__':
     y = YahooRss(rss_url="http://online.wsj.com/xml/rss/3_7041.xml")
