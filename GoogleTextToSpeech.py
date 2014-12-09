@@ -19,6 +19,7 @@ import subprocess
 # http://translate.google.com/translate_tts?q=testing+1+2+3&tl=en_gb
 #
 # http://translate.google.com/translate_tts?q=testing+1+2+3&tl=en_au
+# https://support.google.com/translate/toolkit/answer/1230984?hl=en
 class GoogleTextToSpeech:
 
     def _get_tts_url(self, locale=None):
