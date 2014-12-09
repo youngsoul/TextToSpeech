@@ -21,8 +21,18 @@ import subprocess
 # http://translate.google.com/translate_tts?q=testing+1+2+3&tl=en_au
 class GoogleTextToSpeech:
 
-    def __init__(self, tmp_dir="/mnt/ram"):
-        self.tts_url = "http://translate.google.com/translate_tts?tl=en_gb&q="
+    def _get_tts_url(self, locale=None):
+        locale_to_use = self.voice_locale
+        if locale is not None:
+            locale_to_use = locale
+
+        if locale_to_use is None:
+            locale_to_use = 'en_gb'
+
+        return "http://translate.google.com/translate_tts?tl=" + locale_to_use +"&q="
+
+    def __init__(self, tmp_dir="/mnt/ram", voice_locale='en_gb'):
+        self.voice_locale = voice_locale
         self.tmp_dir = tmp_dir
         self.mp3_files = []
 
@@ -39,7 +49,7 @@ class GoogleTextToSpeech:
     # is converted to:
     # ZmZiOWE2YmMxYmY1NzdmNzQzODUxMTNkNjcxODhlOTI=.mp3
     #
-    def _download_file(self, text_sample):
+    def _download_file(self, text_sample, voice_locale=None):
         local_filename = self._create_media_filename(text_sample)
 
         # add a \n so each one ends up on their own line in the play_list.txt file
@@ -48,7 +58,7 @@ class GoogleTextToSpeech:
         if not os.path.isfile(local_filename):
             # local_filename = url.split('/')[-1]
             # NOTE the stream=True parameter
-            the_url = self.tts_url+"'"+text_sample+"'"
+            the_url = self._get_tts_url(voice_locale)+"'"+text_sample+"'"
             #print("url: " + the_url)
             r = requests.get(the_url, stream=True)
             with open(local_filename, 'wb')as f:
@@ -83,7 +93,7 @@ class GoogleTextToSpeech:
         local_filename = self.tmp_dir + "/" + md5_text_hash + ".mp3"
         return local_filename
 
-    def get_text_to_speech(self, text_sample, play_list_name='play_list.txt'):
+    def get_text_to_speech(self, text_sample, voice_locale=None, play_list_name='play_list.txt'):
         """given the text_sample, interface with google translate to convert
         the text to mp3 speech samples.  If the text is greater than 100
         characters, it will be divided on a sentence boundary and multiple
@@ -100,10 +110,10 @@ class GoogleTextToSpeech:
                 shorts.extend(textwrap.wrap(chunk, 100))
 
             for sentence in shorts:
-                self._download_file(sentence.lstrip())
+                self._download_file(sentence.lstrip(), voice_locale)
 
         else:
-            self._download_file(text_sample)
+            self._download_file(text_sample,voice_locale)
 
         self._save_playlist(play_list_name)
 
