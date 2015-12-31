@@ -81,7 +81,7 @@ class YahooWeather:
             self.forecast_summary = re.sub('Wed -', ' .Wednesday. ', self.forecast_summary)
             self.forecast_summary = re.sub('Thu -', ' .Thursday. ', self.forecast_summary)
             self.forecast_summary = re.sub('Fri -', ' .Friday. ', self.forecast_summary)
-            self.forecast_summary = re.sub('Sat -', ' .Saturday ', self.forecast_summary)
+            self.forecast_summary = re.sub('Sat -', ' .Saturday. ', self.forecast_summary)
             self.forecast_summary = re.sub('Current Conditions:', 'Weather $title_detail. Currently', self.forecast_summary)
             self.forecast_summary = re.sub(' C\n', ' degrees celcius.  \n', self.forecast_summary)
             self.forecast_summary = re.sub(' F\n', ' degrees fahrenheit.  \n', self.forecast_summary)
