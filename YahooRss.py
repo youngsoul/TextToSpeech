@@ -34,7 +34,21 @@ class YahooRss:
             response = urllib.urlopen(url).read()
             self.results = json.loads(response)
 
-    def generate_summary(self, one_random_entry=False):
+    def generate_summary(self, one_random_entry=False, space_title=False, wotd_title=False):
+        """
+
+        :param one_random_entry: True - if there are multiple entries, then just randomly pick one
+        :param space_title: Add spaces to the title.  This was added because the acronym of
+        the day, e.g. WTF, causes the speech generator to try to say the word instead of
+        the letters.  Adding a space like, W T F causes the speech generator to say each
+        letter.  True - add spaces, False - to not alter the title
+        :param wotd_title: Changes the title to the format:
+        <title>
+        <title with spaces, so it sounds like it is spelled out>
+        <title>
+        This was added for word of the day functionality.
+        :return:
+        """
         news_entries = ""
         feed_title = ""
         news_summary = ""
@@ -43,14 +57,27 @@ class YahooRss:
             max_limit = min(len(self.results['query']['results']['feed']), self.max_stories)
             all_entries = self.results['query']['results']['feed'][:max_limit]
             if one_random_entry:
-                random_index = random.randint(0,len(all_entries))
+                random_index = random.randint(0,len(all_entries)-1)
                 all_entries = [all_entries[random_index]]
 
             for entry in all_entries:
                 feed_title = entry['title']
                 if self.use_intros:
                     news_entries += self.story_intros[random.randint(0, 3)]
-                news_entries += entry['entry']['title'] + '.  ' + entry['entry']['summary'] + '.  '
+                if wotd_title:
+                    # useful for word of day
+                    the_title = entry['entry']['title']
+                    the_title += "  "
+                    the_title += "  ".join(the_title)
+                    the_title += " "
+                    the_title += entry['entry']['title']
+                    news_entries += the_title + '.  ' + entry['entry']['summary'] + '.  '
+                else:
+                    the_title = entry['entry']['title']
+                    if space_title:
+                        the_title = "  ".join(the_title)
+                    news_entries += the_title + '.  ' + entry['entry']['summary'] + '.  '
+
             news_summary = self.summary_prefix + '  ' + feed_title + '.  ' + news_entries
 
         # if the aphostrophe is a special character, then replace it
@@ -65,12 +92,17 @@ if __name__ == '__main__':
     rss_url_wsj = "http://online.wsj.com/xml/rss/3_7041.xml"
     rss_url_wotd = "http://www.netlingo.com/feed-wotd.rss"
     rss_url_aotd = "http://www.netlingo.com/feed-aotd.rss"
+    rss_url_wotd2 = "http://wordsmith.org/awad/rss2.xml"
+    rss_url_wotd3 = "http://www.merriam-webster.com/wotd/feed/rss2"
 
-    y = YahooRss(rss_url=rss_url_aotd, max_stories=20, summary_prefix="", use_intros=False)
+    rss_url_history = "http://feeds.feedburner.com/historyorb/todayinhistory?format=xml"
+
+    y = YahooRss(rss_url=rss_url_wotd2, max_stories=20, summary_prefix="", use_intros=False)
     y.retrieve_rss()
-    rss_summary = y.generate_summary(True)
+    rss_summary = y.generate_summary(one_random_entry=False, space_title=False, wotd_title=True)
 
     rss_summary = BeautifulSoup(rss_summary).getText(" ")
+    #rss_summary = rss_summary.replace("For more info, visit the link below!","")
 
     print(rss_summary)
     if platform.system() == 'Linux':
