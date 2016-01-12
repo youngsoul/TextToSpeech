@@ -54,8 +54,11 @@ class YahooRss:
         news_summary = ""
 
         if self.results:
-            max_limit = min(len(self.results['query']['results']['feed']), self.max_stories)
-            all_entries = self.results['query']['results']['feed'][:max_limit]
+            max_limit = min(len(self.results['query']['results']['feed'])-1, self.max_stories)
+            if max_limit > 1:
+                all_entries = self.results['query']['results']['feed'][:max_limit]
+            else:
+                all_entries = [self.results['query']['results']['feed']]
             if one_random_entry:
                 random_index = random.randint(0,len(all_entries)-1)
                 all_entries = [all_entries[random_index]]
